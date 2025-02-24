@@ -13,14 +13,23 @@ export class BillsService {
 
   async findAll() {
     return await this.prisma.bill.findMany({
-      include: { sponsor: { select: { name: true } } },
+      include: {
+        sponsor: { select: { name: true } },
+        stage: { select: { name: true } },
+        status: { select: { name: true, color: true } },
+      },
+      omit: {
+        sponsorId: true,
+        stageId: true,
+        statusId: true,
+      },
     });
   }
 
   async findOne(id: string) {
     return await this.prisma.bill.findUnique({
       where: { id },
-      include: { sponsor: true },
+      include: { sponsor: true, stage: true, status: true },
     });
   }
 

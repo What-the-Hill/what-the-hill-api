@@ -19,6 +19,10 @@ model Bill {
   ranking   Int
   sponsor   Legislator @relation(fields: [sponsorId], references: [id])
   sponsorId String
+  status    Status     @relation(fields: [statusId], references: [id])
+  statusId  String
+  stage     Stage      @relation(fields: [stageId], references: [id])
+  stageId   String
   summary   String?
   title     String
 }
@@ -38,6 +42,7 @@ model Stage {
   updatedAt DateTime @default(now())
 
   name String
+  Bill Bill[]
 }
 
 model Status {
@@ -47,6 +52,7 @@ model Status {
 
   color String
   name  String
+  Bill  Bill[]
 }
 
 model User {

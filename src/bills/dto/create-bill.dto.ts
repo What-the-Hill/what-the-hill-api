@@ -33,6 +33,14 @@ export class CreateBillDto {
   @IsNotEmpty()
   sponsorId: string;
 
+  @IsString()
+  @IsNotEmpty()
+  statusId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  stageId: string;
+
   @IsOptional()
   @IsString()
   @IsNotEmpty()
