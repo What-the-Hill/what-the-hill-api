@@ -12,11 +12,16 @@ export class BillsService {
   }
 
   async findAll() {
-    return await this.prisma.bill.findMany();
+    return await this.prisma.bill.findMany({
+      include: { sponsor: { select: { name: true } } },
+    });
   }
 
   async findOne(id: string) {
-    return await this.prisma.bill.findUnique({ where: { id } });
+    return await this.prisma.bill.findUnique({
+      where: { id },
+      include: { sponsor: true },
+    });
   }
 
   async update(id: string, updateBillDto: UpdateBillDto) {
