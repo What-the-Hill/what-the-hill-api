@@ -16,15 +16,21 @@ Tools:
 
 `npm install -g @nestjs/cli`
 
-`docker compose -d`
+`docker compose up -d`
 
 `cp .env.template .env`
 
 Edit environment variables in `.env` to match `docker-compose.yml` if you made changes
 
-`npx prisma migrate dev`
+`npx prisma db push` to initialize fresh db
 
 `npm run start:dev`
+
+## Nest CLI
+
+To create a resource with CRUD operators
+
+`nest g resource my-resource-name`
 
 ## DB Migrations
 

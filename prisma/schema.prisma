@@ -6,3 +6,55 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Bill {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  detail    String?
+  links     String[]
+  name      String?
+  number    String
+  ranking   Int
+  sponsor   Legislator @relation(fields: [sponsorId], references: [id])
+  sponsorId String
+  summary   String?
+  title     String
+}
+
+model Legislator {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  bills Bill[]
+  name  String
+}
+
+model Stage {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  name String
+}
+
+model Status {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  color String
+  name  String
+}
+
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  email        String @unique
+  name         String
+  passwordHash String
+}
