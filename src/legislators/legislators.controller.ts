@@ -6,11 +6,14 @@ import {
   Patch,
   Param,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { LegislatorsService } from './legislators.service';
 import { CreateLegislatorDto } from './dto/create-legislator.dto';
 import { UpdateLegislatorDto } from './dto/update-legislator.dto';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
+import { Request } from 'express';
+import { User } from '@prisma/client';
 
 @Controller('legislators')
 export class LegislatorsController {
@@ -18,8 +21,14 @@ export class LegislatorsController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  create(@Body() createLegislatorDto: CreateLegislatorDto) {
-    return this.legislatorsService.create(createLegislatorDto);
+  create(
+    @Body() createLegislatorDto: CreateLegislatorDto,
+    @Req() req: Request,
+  ) {
+    return this.legislatorsService.create(
+      createLegislatorDto,
+      req.user as User,
+    );
   }
 
   @Get()
@@ -37,7 +46,12 @@ export class LegislatorsController {
   update(
     @Param('id') id: string,
     @Body() updateLegislatorDto: UpdateLegislatorDto,
+    @Req() req: Request,
   ) {
-    return this.legislatorsService.update(id, updateLegislatorDto);
+    return this.legislatorsService.update(
+      id,
+      updateLegislatorDto,
+      req.user as User,
+    );
   }
 }

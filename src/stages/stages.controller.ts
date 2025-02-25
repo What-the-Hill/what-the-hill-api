@@ -6,11 +6,14 @@ import {
   Patch,
   Param,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { StagesService } from './stages.service';
 import { CreateStageDto } from './dto/create-stage.dto';
 import { UpdateStageDto } from './dto/update-stage.dto';
 import { JwtAuthGuard } from 'src/auth/jwt.auth.guard';
+import { Request } from 'express';
+import { User } from '@prisma/client';
 
 @Controller('stages')
 export class StagesController {
@@ -18,8 +21,8 @@ export class StagesController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  create(@Body() createStageDto: CreateStageDto) {
-    return this.stagesService.create(createStageDto);
+  create(@Body() createStageDto: CreateStageDto, @Req() req: Request) {
+    return this.stagesService.create(createStageDto, req.user as User);
   }
 
   @Get()
@@ -34,7 +37,11 @@ export class StagesController {
 
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
-  update(@Param('id') id: string, @Body() updateStageDto: UpdateStageDto) {
-    return this.stagesService.update(id, updateStageDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateStageDto: UpdateStageDto,
+    @Req() req: Request,
+  ) {
+    return this.stagesService.update(id, updateStageDto, req.user as User);
   }
 }

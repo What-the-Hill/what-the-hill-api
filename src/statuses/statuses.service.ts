@@ -2,15 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { CreateStatusDto } from './dto/create-status.dto';
 import { UpdateStatusDto } from './dto/update-status.dto';
 import { PrismaService } from 'src/prisma.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class StatusesService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createStatusDto: CreateStatusDto) {
+  async create(createStatusDto: CreateStatusDto, user: User) {
     return await this.prisma.status.create({
       data: {
         ...createStatusDto,
+        updatedBy: user.id,
       },
     });
   }
@@ -23,10 +25,10 @@ export class StatusesService {
     return await this.prisma.status.findUnique({ where: { id } });
   }
 
-  async update(id: string, updateStatusDto: UpdateStatusDto) {
+  async update(id: string, updateStatusDto: UpdateStatusDto, user: User) {
     return await this.prisma.status.update({
       where: { id },
-      data: { ...updateStatusDto, updatedAt: new Date() },
+      data: { ...updateStatusDto, updatedAt: new Date(), updatedBy: user.id },
     });
   }
 }

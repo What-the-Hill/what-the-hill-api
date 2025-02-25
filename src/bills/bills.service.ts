@@ -2,13 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { CreateBillDto } from './dto/create-bill.dto';
 import { UpdateBillDto } from './dto/update-bill.dto';
 import { PrismaService } from 'src/prisma.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class BillsService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createBillDto: CreateBillDto) {
-    return await this.prisma.bill.create({ data: { ...createBillDto } });
+  async create(createBillDto: CreateBillDto, user: User) {
+    return await this.prisma.bill.create({
+      data: { ...createBillDto, updatedBy: user.id },
+    });
   }
 
   async findAll() {
@@ -28,10 +31,10 @@ export class BillsService {
     });
   }
 
-  async update(id: string, updateBillDto: UpdateBillDto) {
+  async update(id: string, updateBillDto: UpdateBillDto, user: User) {
     return await this.prisma.bill.update({
       where: { id },
-      data: { ...updateBillDto, updatedAt: new Date() },
+      data: { ...updateBillDto, updatedAt: new Date(), updatedBy: user.id },
     });
   }
 }
