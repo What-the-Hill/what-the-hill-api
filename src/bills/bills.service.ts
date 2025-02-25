@@ -18,11 +18,6 @@ export class BillsService {
         stage: { select: { name: true } },
         status: { select: { name: true, color: true } },
       },
-      omit: {
-        sponsorId: true,
-        stageId: true,
-        statusId: true,
-      },
     });
   }
 
