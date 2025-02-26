@@ -15,11 +15,16 @@ export class StagesService {
   }
 
   async findAll() {
-    return await this.prisma.stage.findMany();
+    return await this.prisma.stage.findMany({
+      include: { _count: { select: { Bill: true } } },
+    });
   }
 
   async findOne(id: string) {
-    return await this.prisma.stage.findUnique({ where: { id } });
+    return await this.prisma.stage.findUnique({
+      where: { id },
+      include: { _count: { select: { Bill: true } } },
+    });
   }
 
   async update(id: string, updateStageDto: UpdateStageDto, user: User) {

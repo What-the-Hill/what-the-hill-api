@@ -18,11 +18,16 @@ export class StatusesService {
   }
 
   async findAll() {
-    return await this.prisma.status.findMany();
+    return await this.prisma.status.findMany({
+      include: { _count: { select: { Bill: true } } },
+    });
   }
 
   async findOne(id: string) {
-    return await this.prisma.status.findUnique({ where: { id } });
+    return await this.prisma.status.findUnique({
+      where: { id },
+      include: { _count: { select: { Bill: true } } },
+    });
   }
 
   async update(id: string, updateStatusDto: UpdateStatusDto, user: User) {
