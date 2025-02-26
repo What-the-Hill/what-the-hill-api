@@ -13,19 +13,21 @@ model Bill {
   updatedAt DateTime @default(now())
   updatedBy String
 
-  detail    String?
-  links     String[]
-  name      String?
-  number    String
-  ranking   Int
-  sponsor   Legislator @relation(fields: [sponsorId], references: [id])
-  sponsorId String
-  status    Status     @relation(fields: [statusId], references: [id])
-  statusId  String
-  stage     Stage      @relation(fields: [stageId], references: [id])
-  stageId   String
-  summary   String?
-  title     String
+  detail         String?
+  floorSponsor   Legislator? @relation(fields: [floorSponsorId], references: [id], name: "floorSponsor")
+  floorSponsorId String?
+  links          String[]
+  name           String?
+  number         String
+  ranking        Int
+  sponsor        Legislator  @relation(fields: [sponsorId], references: [id], name: "sponsor")
+  sponsorId      String
+  status         Status      @relation(fields: [statusId], references: [id])
+  statusId       String
+  stage          Stage       @relation(fields: [stageId], references: [id])
+  stageId        String
+  summary        String?
+  title          String
 }
 
 model Legislator {
@@ -34,8 +36,9 @@ model Legislator {
   updatedAt DateTime @default(now())
   updatedBy String
 
-  bills Bill[]
-  name  String
+  bills      Bill[] @relation("sponsor")
+  floorBills Bill[] @relation("floorSponsor")
+  name       String
 }
 
 model Stage {

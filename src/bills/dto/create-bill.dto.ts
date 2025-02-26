@@ -13,6 +13,11 @@ export class CreateBillDto {
   detail: string;
 
   @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  floorSponsorId: string;
+
+  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   links: string[];

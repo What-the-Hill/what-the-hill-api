@@ -17,6 +17,7 @@ export class BillsService {
   async findAll() {
     return await this.prisma.bill.findMany({
       include: {
+        floorSponsor: { select: { name: true } },
         sponsor: { select: { name: true } },
         stage: { select: { name: true } },
         status: { select: { name: true, color: true } },
@@ -27,7 +28,7 @@ export class BillsService {
   async findOne(id: string) {
     return await this.prisma.bill.findUnique({
       where: { id },
-      include: { sponsor: true, stage: true, status: true },
+      include: { floorSponsor: true, sponsor: true, stage: true, status: true },
     });
   }
 

@@ -16,14 +16,17 @@ export class LegislatorsService {
 
   async findAll() {
     return await this.prisma.legislator.findMany({
-      include: { bills: { select: { title: true } } },
+      include: {
+        bills: { select: { title: true } },
+        floorBills: { select: { title: true } },
+      },
     });
   }
 
   async findOne(id: string) {
     return await this.prisma.legislator.findUnique({
       where: { id },
-      include: { bills: true },
+      include: { bills: true, floorBills: true },
     });
   }
 
